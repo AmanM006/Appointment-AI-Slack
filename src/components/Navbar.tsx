@@ -1,0 +1,155 @@
+
+import React, { useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+
+const Navbar = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return (
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent'
+      }`}
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20">
+          <div className="flex-shrink-0">
+            <a href="/" className="flex items-center">
+              <span className="text-2xl font-bold text-purple-700">Aura</span>
+              <span className="ml-1 text-2xl font-light">AI</span>
+            </a>
+          </div>
+
+          {/* Desktop navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <a href="#features" className="text-sm font-medium text-gray-700 hover:text-purple-700 transition-colors">
+              Features
+            </a>
+            <a href="#how-it-works" className="text-sm font-medium text-gray-700 hover:text-purple-700 transition-colors">
+              How It Works
+            </a>
+            <a href="#pricing" className="text-sm font-medium text-gray-700 hover:text-purple-700 transition-colors">
+              Pricing
+            </a>
+            <a href="#contact" className="text-sm font-medium text-gray-700 hover:text-purple-700 transition-colors">
+              Contact
+            </a>
+          </nav>
+
+          <div className="hidden md:flex items-center space-x-4">
+            <Button variant="outline" className="secondary-button">
+              Sign In
+            </Button>
+            <Button className="glow-button">
+              View Plans
+            </Button>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-purple-700"
+            aria-controls="mobile-menu"
+            aria-expanded="false"
+          >
+            <span className="sr-only">Open main menu</span>
+            <svg
+              className={`${isMobileMenuOpen ? 'hidden' : 'block'} h-6 w-6`}
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg
+              className={`${isMobileMenuOpen ? 'block' : 'hidden'} h-6 w-6`}
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile menu, show/hide based on menu state */}
+      <div
+        className={`md:hidden fixed inset-y-0 right-0 transform transition duration-300 ease-in-out ${
+          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        } bg-white w-4/5 shadow-lg z-50 h-full pt-20`}
+        id="mobile-menu"
+      >
+        <div className="px-6 pt-2 pb-4 space-y-6">
+          <a
+            href="#features"
+            className="block py-3 text-base font-medium text-gray-700 hover:text-purple-700"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Features
+          </a>
+          <a
+            href="#how-it-works"
+            className="block py-3 text-base font-medium text-gray-700 hover:text-purple-700"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            How It Works
+          </a>
+          <a
+            href="#pricing"
+            className="block py-3 text-base font-medium text-gray-700 hover:text-purple-700"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Pricing
+          </a>
+          <a
+            href="#contact"
+            className="block py-3 text-base font-medium text-gray-700 hover:text-purple-700"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Contact
+          </a>
+          <div className="pt-4 space-y-4">
+            <Button variant="outline" className="secondary-button w-full">
+              Sign In
+            </Button>
+            <Button className="glow-button w-full">
+              View Plans
+            </Button>
+          </div>
+        </div>
+      </div>
+      
+      {/* Overlay for mobile menu */}
+      {isMobileMenuOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+    </header>
+  );
+};
+
+export default Navbar;
