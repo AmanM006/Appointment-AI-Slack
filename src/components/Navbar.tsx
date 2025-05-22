@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -30,26 +31,26 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           <div className="flex-shrink-0">
-            <a href="/" className="flex items-center">
+            <Link to="/" className="flex items-center">
               <span className="text-2xl font-bold text-purple-400">Aura</span>
               <span className="ml-1 text-2xl font-light text-white">AI</span>
-            </a>
+            </Link>
           </div>
 
           {/* Desktop navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
+            <Link to="/#features" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
               Features
-            </a>
-            <a href="#how-it-works" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
+            </Link>
+            <Link to="/#how-it-works" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
               How It Works
-            </a>
-            <a href="#pricing" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
+            </Link>
+            <Link to="/pricing" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
               Pricing
-            </a>
-            <a href="#contact" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
+            </Link>
+            <Link to="/contact" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
               Contact
-            </a>
+            </Link>
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
@@ -102,34 +103,34 @@ const Navbar = () => {
         id="mobile-menu"
       >
         <div className="px-6 pt-2 pb-4 space-y-6">
-          <a
-            href="#features"
+          <Link
+            to="/#features"
             className="block py-3 text-base font-medium text-gray-300 hover:text-purple-400"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Features
-          </a>
-          <a
-            href="#how-it-works"
+          </Link>
+          <Link
+            to="/#how-it-works"
             className="block py-3 text-base font-medium text-gray-300 hover:text-purple-400"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             How It Works
-          </a>
-          <a
-            href="#pricing"
+          </Link>
+          <Link
+            to="/pricing"
             className="block py-3 text-base font-medium text-gray-300 hover:text-purple-400"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Pricing
-          </a>
-          <a
-            href="#contact"
+          </Link>
+          <Link
+            to="/contact"
             className="block py-3 text-base font-medium text-gray-300 hover:text-purple-400"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Contact
-          </a>
+          </Link>
           <div className="pt-4 space-y-4">
             <Button variant="outline" className="secondary-button w-full">
               Sign In
