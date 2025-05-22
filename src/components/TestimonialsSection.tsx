@@ -59,12 +59,12 @@ const TestimonialsSection = () => {
   }, []);
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={testimonialsRef} className="slide-up">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">What Our Users Say</h2>
-            <p className="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white gradient-text">What Our Users Say</h2>
+            <p className="mt-4 text-xl text-gray-300 max-w-3xl mx-auto">
               Discover how businesses are transforming their appointment management with Aura AI.
             </p>
           </div>
@@ -79,25 +79,25 @@ const TestimonialsSection = () => {
                   <div key={index} className="w-full flex-shrink-0 px-4">
                     <div className="glass-card p-8 sm:p-10 rounded-xl text-center">
                       <div className="mb-6">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-purple-300 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-purple-400 mx-auto" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z" />
                         </svg>
                       </div>
-                      <p className="text-xl text-gray-700 mb-8">{testimonial.content}</p>
+                      <p className="text-xl text-gray-300 mb-8">{testimonial.content}</p>
                       <div className="flex items-center justify-center">
                         <div className="mr-4">
-                          <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                            <span className="text-purple-700 font-bold">
+                          <div className="w-12 h-12 bg-purple-900/50 rounded-full flex items-center justify-center">
+                            <span className="text-purple-400 font-bold">
                               {testimonial.author.substring(0, 1)}
                             </span>
                           </div>
                         </div>
                         <div className="text-left">
-                          <h4 className="font-semibold text-gray-900">{testimonial.author}</h4>
-                          <p className="text-sm text-gray-600">{testimonial.title}, {testimonial.company}</p>
+                          <h4 className="font-semibold text-white">{testimonial.author}</h4>
+                          <p className="text-sm text-gray-400">{testimonial.title}, {testimonial.company}</p>
                         </div>
                         <div className="ml-auto">
-                          <span className="inline-block bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full font-medium">
+                          <span className="inline-block bg-purple-900/50 text-purple-400 text-sm px-3 py-1 rounded-full font-medium">
                             {testimonial.result}
                           </span>
                         </div>
@@ -114,7 +114,7 @@ const TestimonialsSection = () => {
                   key={index}
                   onClick={() => setCurrentTestimonial(index)}
                   className={`w-3 h-3 rounded-full ${
-                    currentTestimonial === index ? 'bg-purple-700' : 'bg-purple-200'
+                    currentTestimonial === index ? 'bg-purple-500' : 'bg-purple-900/50'
                   }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 ></button>

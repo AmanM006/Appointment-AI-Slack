@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PricingSection from "@/components/PricingSection";
@@ -31,10 +31,12 @@ const Pricing = () => {
       <Navbar />
       <main className="pt-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-8 gradient-text">Our Pricing</h1>
-          <p className="text-xl text-gray-300 mb-12 max-w-3xl">
-            Choose the plan that best fits your team's needs and transform your workflow with Aura AI.
-          </p>
+          <div className="slide-up">
+            <h1 className="text-4xl sm:text-5xl font-bold text-white mb-8 gradient-text">Our Pricing</h1>
+            <p className="text-xl text-gray-300 mb-12 max-w-3xl">
+              Choose the plan that best fits your team's needs and transform your workflow with Aura AI.
+            </p>
+          </div>
         </div>
         <PricingSection />
       </main>
