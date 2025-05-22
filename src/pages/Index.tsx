@@ -33,18 +33,31 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <main>
-        <HeroSection />
-        <LogoCloud />
-        <FeaturesSection />
-        <TestimonialsSection />
-        <PricingSection />
-        <FAQSection />
-        <ContactSection />
-      </main>
-      <Footer />
+    <div className="min-h-screen bg-background relative">
+      {/* Spline 3D Background */}
+      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none">
+        <iframe 
+          src='https://my.spline.design/animatedbackgroundgradientforweb-XNvYjTQKpqpGJIvRAq0SQbGG/' 
+          frameBorder='0' 
+          width='100%' 
+          height='100%'
+          title="3D Background"
+        />
+      </div>
+
+      <div className="relative z-10">
+        <Navbar />
+        <main>
+          <HeroSection />
+          <LogoCloud />
+          <FeaturesSection />
+          <TestimonialsSection />
+          <PricingSection />
+          <FAQSection />
+          <ContactSection />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 };
