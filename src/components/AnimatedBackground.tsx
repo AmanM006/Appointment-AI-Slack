@@ -22,16 +22,15 @@ const AnimatedBackground = () => {
 
     // Animation function
     const animate = () => {
-      const currentTime = Date.now() * 0.0005; // Slow down the animation
+      const currentTime = Date.now() * 0.001; // Convert to seconds for smoother animation
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Create gradient background - dark blue to red color scheme
-      const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      bgGradient.addColorStop(0, '#050533'); // Dark blue at top
-      bgGradient.addColorStop(0.3, '#0a1863'); // Blue
-      bgGradient.addColorStop(0.5, '#8d5d00'); // Yellow-orange
-      bgGradient.addColorStop(0.7, '#b33d00'); // Orange
-      bgGradient.addColorStop(1, '#800000'); // Dark red at bottom
+      // Create gradient background
+      const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      bgGradient.addColorStop(0, 'rgb(10, 10, 20)'); // Very dark blue-black at top
+      bgGradient.addColorStop(0.4, 'rgb(17, 24, 90)'); // Deep blue in middle
+      bgGradient.addColorStop(0.8, 'rgb(30, 64, 175)'); // Medium blue near bottom
+      bgGradient.addColorStop(1, 'rgb(8, 8, 15)'); // Back to very dark at bottom
       
       ctx.fillStyle = bgGradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -57,62 +56,54 @@ const AnimatedBackground = () => {
         ctx.stroke();
       }
       
-      // Calculate wave height to reach down to productivity tools section
-      // This is approximately 40% of the screen height
-      const waveHeight = canvas.height * 0.4; 
+      // Central glow for accent
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height * 0.4; // Move up slightly to match image
+      const radius = Math.min(canvas.width, canvas.height) * 0.6;
+      
+      const centerGlow = ctx.createRadialGradient(
+        centerX, centerY, 0,
+        centerX, centerY, radius
+      );
+      centerGlow.addColorStop(0, 'rgba(239, 68, 68, 0.15)'); // Red glow
+      centerGlow.addColorStop(0.3, 'rgba(219, 100, 27, 0.08)'); // Orange glow
+      centerGlow.addColorStop(0.6, 'rgba(59, 130, 246, 0.12)'); // Blue glow
+      centerGlow.addColorStop(1, 'rgba(30, 64, 175, 0)'); // Fade out
+      
+      ctx.fillStyle = centerGlow;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Animated wave only at the top 20% of the screen
+      const waveHeight = canvas.height * 0.2; // Top 20% of screen
       const waveY = 0; // Start at the top
       
-      // Create wave gradient with glow effect
+      // Create wave gradient
       const waveGradient = ctx.createLinearGradient(0, waveY, 0, waveY + waveHeight);
-      waveGradient.addColorStop(0, 'rgba(30, 64, 175, 0.2)'); // Blue with slight opacity
-      waveGradient.addColorStop(0.4, 'rgba(59, 130, 246, 0.25)'); // Brighter blue in middle
-      waveGradient.addColorStop(0.8, 'rgba(252, 211, 77, 0.2)'); // Yellow
-      waveGradient.addColorStop(1, 'rgba(239, 68, 68, 0.1)'); // Red with fade out
+      waveGradient.addColorStop(0, 'rgba(30, 64, 175, 0.1)');
+      waveGradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.15)');
+      waveGradient.addColorStop(1, 'rgba(30, 64, 175, 0)');
       
       ctx.fillStyle = waveGradient;
       
-      // Draw 2-3 slow moving waves
+      // Draw animated wave
       ctx.beginPath();
       ctx.moveTo(0, waveY);
       
-      // Wave 1 (slow moving)
-      for(let x = 0; x <= canvas.width; x += 10) {
-        const y1 = Math.sin(x * 0.003 + currentTime * 0.5) * 20;
-        ctx.lineTo(x, waveY + y1);
+      // Create wave pattern across the width
+      for(let x = 0; x <= canvas.width; x += 20) {
+        // Multiple sine waves with different frequencies and amplitudes
+        const y1 = Math.sin(x * 0.01 + currentTime) * 15;
+        const y2 = Math.sin(x * 0.02 - currentTime * 0.7) * 8;
+        const y = waveY + y1 + y2;
+        ctx.lineTo(x, y);
       }
       
-      // Continue to wave 2 (offset and slower)
+      // Complete the wave shape
       ctx.lineTo(canvas.width, waveY);
-      ctx.lineTo(canvas.width, waveY + 30); // Small offset
-      
-      for(let x = canvas.width; x >= 0; x -= 10) {
-        const y2 = Math.sin(x * 0.005 - currentTime * 0.3) * 15 + 30; // Offset wave
-        ctx.lineTo(x, waveY + y2);
-      }
-      
-      // Continue to wave 3 (further offset and even slower)
-      ctx.lineTo(0, waveY + 60); // Another offset
-      
-      for(let x = 0; x <= canvas.width; x += 10) {
-        const y3 = Math.sin(x * 0.004 + currentTime * 0.2) * 18 + 60; // Further offset wave
-        ctx.lineTo(x, waveY + y3);
-      }
-      
-      // Complete the wave shape to fill the top 40%
       ctx.lineTo(canvas.width, waveY + waveHeight);
       ctx.lineTo(0, waveY + waveHeight);
       ctx.closePath();
       ctx.fill();
-      
-      // Add glow effect to wave edges
-      ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)'; // Reddish glow
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      
-      // Add second glow for more intensity
-      ctx.strokeStyle = 'rgba(252, 211, 77, 0.3)'; // Yellow glow
-      ctx.lineWidth = 1;
-      ctx.stroke();
       
       requestAnimationFrame(animate);
     };
