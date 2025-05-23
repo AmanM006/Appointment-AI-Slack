@@ -9,6 +9,7 @@ import PricingSection from "@/components/PricingSection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import AnimatedBackground from "@/components/AnimatedBackground";
 
 const Index = () => {
   useEffect(() => {
@@ -34,16 +35,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
-      {/* Spline 3D Background */}
-      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none">
-        <iframe 
-          src='https://my.spline.design/animatedbackgroundgradientforweb-XNvYjTQKpqpGJIvRAq0SQbGG/' 
-          frameBorder='0' 
-          width='100%' 
-          height='100%'
-          title="3D Background"
-        />
-      </div>
+      {/* Custom Animated Background */}
+      <AnimatedBackground />
 
       <div className="relative z-10">
         <Navbar />

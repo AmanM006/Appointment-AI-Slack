@@ -29,7 +29,7 @@ const LogoCloud = () => {
   }, []);
 
   return (
-    <section className="py-12 bg-gray-900 relative overflow-hidden">
+    <section className="py-12 bg-gray-900/70 backdrop-blur-sm relative overflow-hidden">
       {/* Subtle glow effects */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-32 bg-purple-600/10 blur-[100px]" />
