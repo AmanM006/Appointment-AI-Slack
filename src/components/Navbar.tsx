@@ -39,10 +39,10 @@ const Navbar = () => {
 
           {/* Desktop navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/#features" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
+            <Link to="/features" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
               Features
             </Link>
-            <Link to="/#how-it-works" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
+            <Link to="/how-it-works" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
               How It Works
             </Link>
             <Link to="/pricing" className="text-sm font-medium text-gray-300 hover:text-purple-400 transition-colors">
@@ -106,14 +106,14 @@ const Navbar = () => {
       >
         <div className="px-6 pt-2 pb-4 space-y-6">
           <Link
-            to="/#features"
+            to="/features"
             className="block py-3 text-base font-medium text-gray-300 hover:text-purple-400"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Features
           </Link>
           <Link
-            to="/#how-it-works"
+            to="/how-it-works"
             className="block py-3 text-base font-medium text-gray-300 hover:text-purple-400"
             onClick={() => setIsMobileMenuOpen(false)}
           >

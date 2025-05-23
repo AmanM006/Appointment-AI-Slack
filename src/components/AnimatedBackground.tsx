@@ -20,91 +20,21 @@ const AnimatedBackground = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Parameters for animation
-    const particles: Particle[] = [];
-    const particleCount = 60;
-    
-    // Updated colors to match the image with blue, orange, and red tones
-    const colors = [
-      'rgb(30, 64, 175)', // Deep blue
-      'rgb(59, 130, 246)', // Medium blue
-      'rgb(219, 100, 27)', // Orange
-      'rgb(239, 68, 68)', // Red
-      'rgb(30, 58, 138)', // Darker blue
-    ];
-
-    // Particle class
-    class Particle {
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      color: string;
-      opacity: number;
-      
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 60 + 20; // Larger blobs to match image
-        this.speedX = (Math.random() - 0.5) * 0.2; // Slower movement
-        this.speedY = (Math.random() - 0.5) * 0.2; // Slower movement
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.opacity = Math.random() * 0.5 + 0.2;
-      }
-
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        // Bounce off edges
-        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-      }
-
-      draw() {
-        ctx.beginPath();
-        const gradient = ctx.createRadialGradient(
-          this.x, this.y, 0,
-          this.x, this.y, this.size
-        );
-        
-        // Extract RGB values from the color string
-        const rgbValues = this.color.match(/\d+/g);
-        if (!rgbValues || rgbValues.length < 3) return;
-        
-        const r = rgbValues[0];
-        const g = rgbValues[1];
-        const b = rgbValues[2];
-        
-        // Create properly formatted rgba strings with the appropriate opacity
-        gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${this.opacity})`);
-        gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-        
-        ctx.fillStyle = gradient;
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    // Create particles
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
-
-    // Animation loop
+    // Animation function
     const animate = () => {
+      const currentTime = Date.now() * 0.001; // Convert to seconds for smoother animation
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Updated background gradient to match the image with darker base and blue/orange gradient
+      // Create gradient background
       const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      bgGradient.addColorStop(0, 'rgb(10, 10, 20)'); // Very dark blue-black
-      bgGradient.addColorStop(0.4, 'rgb(17, 24, 90)'); // Deep blue
-      bgGradient.addColorStop(0.8, 'rgb(30, 64, 175)'); // Medium blue
-      bgGradient.addColorStop(1, 'rgb(8, 8, 15)'); // Very dark blue-black
+      bgGradient.addColorStop(0, 'rgb(10, 10, 20)'); // Very dark blue-black at top
+      bgGradient.addColorStop(0.4, 'rgb(17, 24, 90)'); // Deep blue in middle
+      bgGradient.addColorStop(0.8, 'rgb(30, 64, 175)'); // Medium blue near bottom
+      bgGradient.addColorStop(1, 'rgb(8, 8, 15)'); // Back to very dark at bottom
+      
       ctx.fillStyle = bgGradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+      
       // Add subtle grid lines
       ctx.lineWidth = 0.3;
       ctx.strokeStyle = 'rgba(59, 130, 246, 0.07)'; // Very subtle blue grid
@@ -117,6 +47,7 @@ const AnimatedBackground = () => {
         ctx.lineTo(canvas.width, i);
         ctx.stroke();
       }
+      
       // Vertical lines
       for (let i = 0; i < canvas.width; i += gridSize) {
         ctx.beginPath();
@@ -124,21 +55,15 @@ const AnimatedBackground = () => {
         ctx.lineTo(i, canvas.height);
         ctx.stroke();
       }
-
-      // Draw and update particles
-      particles.forEach(particle => {
-        particle.update();
-        particle.draw();
-      });
-
-      // Central glow effect with orange/blue colors to match the image
+      
+      // Central glow for accent
       const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
+      const centerY = canvas.height * 0.4; // Move up slightly to match image
       const radius = Math.min(canvas.width, canvas.height) * 0.6;
       
       const centerGlow = ctx.createRadialGradient(
-        centerX, centerY * 0.7, 0, // Move up slightly to match image
-        centerX, centerY * 0.7, radius
+        centerX, centerY, 0,
+        centerX, centerY, radius
       );
       centerGlow.addColorStop(0, 'rgba(239, 68, 68, 0.15)'); // Red glow
       centerGlow.addColorStop(0.3, 'rgba(219, 100, 27, 0.08)'); // Orange glow
@@ -147,34 +72,44 @@ const AnimatedBackground = () => {
       
       ctx.fillStyle = centerGlow;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Add a wave effect at the bottom
-      const waveGradient = ctx.createLinearGradient(0, canvas.height * 0.6, 0, canvas.height);
-      waveGradient.addColorStop(0, 'rgba(30, 64, 175, 0)'); // Start transparent
-      waveGradient.addColorStop(1, 'rgba(30, 64, 175, 0.3)'); // End with blue
+      
+      // Animated wave only at the top 20% of the screen
+      const waveHeight = canvas.height * 0.2; // Top 20% of screen
+      const waveY = 0; // Start at the top
+      
+      // Create wave gradient
+      const waveGradient = ctx.createLinearGradient(0, waveY, 0, waveY + waveHeight);
+      waveGradient.addColorStop(0, 'rgba(30, 64, 175, 0.1)');
+      waveGradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.15)');
+      waveGradient.addColorStop(1, 'rgba(30, 64, 175, 0)');
       
       ctx.fillStyle = waveGradient;
       
-      // Draw wave
+      // Draw animated wave
       ctx.beginPath();
-      ctx.moveTo(0, canvas.height * 0.8);
+      ctx.moveTo(0, waveY);
       
-      // Create wave pattern
-      for(let i = 0; i <= canvas.width; i += 50) {
-        const height = Math.sin(i * 0.01 + (Date.now() * 0.001)) * 20;
-        ctx.lineTo(i, canvas.height * 0.8 + height);
+      // Create wave pattern across the width
+      for(let x = 0; x <= canvas.width; x += 20) {
+        // Multiple sine waves with different frequencies and amplitudes
+        const y1 = Math.sin(x * 0.01 + currentTime) * 15;
+        const y2 = Math.sin(x * 0.02 - currentTime * 0.7) * 8;
+        const y = waveY + y1 + y2;
+        ctx.lineTo(x, y);
       }
       
-      ctx.lineTo(canvas.width, canvas.height);
-      ctx.lineTo(0, canvas.height);
+      // Complete the wave shape
+      ctx.lineTo(canvas.width, waveY);
+      ctx.lineTo(canvas.width, waveY + waveHeight);
+      ctx.lineTo(0, waveY + waveHeight);
       ctx.closePath();
       ctx.fill();
-
+      
       requestAnimationFrame(animate);
     };
-
+    
     animate();
-
+    
     return () => {
       window.removeEventListener('resize', resizeCanvas);
     };
