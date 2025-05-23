@@ -23,12 +23,13 @@ const AnimatedBackground = () => {
     // Parameters for animation
     const particles: Particle[] = [];
     const particleCount = 60;
+    // Define colors as full RGB values without the opacity in the string
     const colors = [
-      'rgba(138, 43, 226, 0.3)', // Purple
-      'rgba(123, 104, 238, 0.3)', // MediumSlateBlue
-      'rgba(106, 90, 205, 0.3)', // SlateBlue
-      'rgba(147, 112, 219, 0.2)', // MediumPurple
-      'rgba(153, 50, 204, 0.3)', // DarkOrchid
+      'rgba(138, 43, 226, 1)', // Purple
+      'rgba(123, 104, 238, 1)', // MediumSlateBlue
+      'rgba(106, 90, 205, 1)', // SlateBlue
+      'rgba(147, 112, 219, 1)', // MediumPurple
+      'rgba(153, 50, 204, 1)', // DarkOrchid
     ];
 
     // Particle class
@@ -67,11 +68,17 @@ const AnimatedBackground = () => {
           this.x, this.y, this.size
         );
         
-        // Fix: Correctly format the rgba color string by extracting base color and applying opacity
-        const baseColor = this.color.substring(0, this.color.lastIndexOf(')') - 1);
+        // Extract RGB values from the color string
+        const rgbValues = this.color.match(/\d+/g);
+        if (!rgbValues || rgbValues.length < 3) return;
         
-        gradient.addColorStop(0, `${baseColor}, ${this.opacity})`);
-        gradient.addColorStop(1, `${baseColor}, 0)`);
+        const r = rgbValues[0];
+        const g = rgbValues[1];
+        const b = rgbValues[2];
+        
+        // Create properly formatted rgba strings with the appropriate opacity
+        gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${this.opacity})`);
+        gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
         
         ctx.fillStyle = gradient;
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
