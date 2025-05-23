@@ -57,9 +57,11 @@ const Navbar = () => {
             <Button variant="outline" className="secondary-button">
               Sign In
             </Button>
-            <Button className="glow-button">
-              Try for free
-            </Button>
+            <Link to="/signup">
+              <Button className="glow-button">
+                Try for free
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -135,9 +137,11 @@ const Navbar = () => {
             <Button variant="outline" className="secondary-button w-full">
               Sign In
             </Button>
-            <Button className="glow-button w-full">
-              Try for free
-            </Button>
+            <Link to="/signup" className="block w-full" onClick={() => setIsMobileMenuOpen(false)}>
+              <Button className="glow-button w-full">
+                Try for free
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
