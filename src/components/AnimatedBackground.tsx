@@ -67,8 +67,11 @@ const AnimatedBackground = () => {
           this.x, this.y, this.size
         );
         
-        gradient.addColorStop(0, this.color.replace(')', `, ${this.opacity})`));
-        gradient.addColorStop(1, this.color.replace(')', ', 0)'));
+        // Fix: Correctly format the rgba color string by extracting base color and applying opacity
+        const baseColor = this.color.substring(0, this.color.lastIndexOf(')') - 1);
+        
+        gradient.addColorStop(0, `${baseColor}, ${this.opacity})`);
+        gradient.addColorStop(1, `${baseColor}, 0)`);
         
         ctx.fillStyle = gradient;
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
