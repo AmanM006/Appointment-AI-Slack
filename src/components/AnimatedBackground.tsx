@@ -23,13 +23,14 @@ const AnimatedBackground = () => {
     // Parameters for animation
     const particles: Particle[] = [];
     const particleCount = 60;
-    // Define colors as full RGB values without the opacity in the string
+    
+    // Updated colors to match the image with blue, orange, and red tones
     const colors = [
-      'rgba(138, 43, 226, 1)', // Purple
-      'rgba(123, 104, 238, 1)', // MediumSlateBlue
-      'rgba(106, 90, 205, 1)', // SlateBlue
-      'rgba(147, 112, 219, 1)', // MediumPurple
-      'rgba(153, 50, 204, 1)', // DarkOrchid
+      'rgb(30, 64, 175)', // Deep blue
+      'rgb(59, 130, 246)', // Medium blue
+      'rgb(219, 100, 27)', // Orange
+      'rgb(239, 68, 68)', // Red
+      'rgb(30, 58, 138)', // Darker blue
     ];
 
     // Particle class
@@ -45,9 +46,9 @@ const AnimatedBackground = () => {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 40 + 10; // Blob size
-        this.speedX = (Math.random() - 0.5) * 0.3;
-        this.speedY = (Math.random() - 0.5) * 0.3;
+        this.size = Math.random() * 60 + 20; // Larger blobs to match image
+        this.speedX = (Math.random() - 0.5) * 0.2; // Slower movement
+        this.speedY = (Math.random() - 0.5) * 0.2; // Slower movement
         this.color = colors[Math.floor(Math.random() * colors.length)];
         this.opacity = Math.random() * 0.5 + 0.2;
       }
@@ -95,19 +96,20 @@ const AnimatedBackground = () => {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Background gradient
-      const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      bgGradient.addColorStop(0, 'rgba(18, 18, 20, 1)');
-      bgGradient.addColorStop(0.5, 'rgba(23, 21, 35, 1)');
-      bgGradient.addColorStop(1, 'rgba(15, 14, 22, 1)');
+      // Updated background gradient to match the image with darker base and blue/orange gradient
+      const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      bgGradient.addColorStop(0, 'rgb(10, 10, 20)'); // Very dark blue-black
+      bgGradient.addColorStop(0.4, 'rgb(17, 24, 90)'); // Deep blue
+      bgGradient.addColorStop(0.8, 'rgb(30, 64, 175)'); // Medium blue
+      bgGradient.addColorStop(1, 'rgb(8, 8, 15)'); // Very dark blue-black
       ctx.fillStyle = bgGradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Add some grid lines
-      ctx.lineWidth = 0.2;
-      ctx.strokeStyle = 'rgba(138, 43, 226, 0.1)';
+      // Add subtle grid lines
+      ctx.lineWidth = 0.3;
+      ctx.strokeStyle = 'rgba(59, 130, 246, 0.07)'; // Very subtle blue grid
       
-      const gridSize = 50;
+      const gridSize = 40;
       // Horizontal lines
       for (let i = 0; i < canvas.height; i += gridSize) {
         ctx.beginPath();
@@ -129,21 +131,44 @@ const AnimatedBackground = () => {
         particle.draw();
       });
 
-      // Central glow effect
+      // Central glow effect with orange/blue colors to match the image
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const radius = Math.min(canvas.width, canvas.height) * 0.4;
+      const radius = Math.min(canvas.width, canvas.height) * 0.6;
       
       const centerGlow = ctx.createRadialGradient(
-        centerX, centerY, 0,
-        centerX, centerY, radius
+        centerX, centerY * 0.7, 0, // Move up slightly to match image
+        centerX, centerY * 0.7, radius
       );
-      centerGlow.addColorStop(0, 'rgba(138, 43, 226, 0.1)');
-      centerGlow.addColorStop(0.6, 'rgba(138, 43, 226, 0.05)');
-      centerGlow.addColorStop(1, 'rgba(138, 43, 226, 0)');
+      centerGlow.addColorStop(0, 'rgba(239, 68, 68, 0.15)'); // Red glow
+      centerGlow.addColorStop(0.3, 'rgba(219, 100, 27, 0.08)'); // Orange glow
+      centerGlow.addColorStop(0.6, 'rgba(59, 130, 246, 0.12)'); // Blue glow
+      centerGlow.addColorStop(1, 'rgba(30, 64, 175, 0)'); // Fade out
       
       ctx.fillStyle = centerGlow;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Add a wave effect at the bottom
+      const waveGradient = ctx.createLinearGradient(0, canvas.height * 0.6, 0, canvas.height);
+      waveGradient.addColorStop(0, 'rgba(30, 64, 175, 0)'); // Start transparent
+      waveGradient.addColorStop(1, 'rgba(30, 64, 175, 0.3)'); // End with blue
+      
+      ctx.fillStyle = waveGradient;
+      
+      // Draw wave
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height * 0.8);
+      
+      // Create wave pattern
+      for(let i = 0; i <= canvas.width; i += 50) {
+        const height = Math.sin(i * 0.01 + (Date.now() * 0.001)) * 20;
+        ctx.lineTo(i, canvas.height * 0.8 + height);
+      }
+      
+      ctx.lineTo(canvas.width, canvas.height);
+      ctx.lineTo(0, canvas.height);
+      ctx.closePath();
+      ctx.fill();
 
       requestAnimationFrame(animate);
     };
