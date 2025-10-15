@@ -1,5 +1,4 @@
-
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,9 +9,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/components/ui/use-toast";
 
 const ContactSection = () => {
   const contactRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    surname: '',
+    email: '',
+    phone: '',
+    role: '',
+    company: '',
+    companySize: '',
+    help: ''
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,6 +49,73 @@ const ContactSection = () => {
       }
     };
   }, []);
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.firstName || !formData.surname || !formData.email || !formData.role || !formData.company || !formData.companySize || !formData.help) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    console.log("Submitting form data:", formData);
+
+    try {
+      const webhookUrl = "https://amanmitmishra.app.n8n.cloud/webhook-test/app";
+      const response = await fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "no-cors",
+        body: JSON.stringify({
+          ...formData,
+          timestamp: new Date().toISOString(),
+          source: "Contact Form"
+        }),
+      });
+
+      toast({
+        title: "Success!",
+        description: "Your message has been sent successfully. We'll get back to you soon!",
+      });
+
+      // Reset form
+      setFormData({
+        firstName: '',
+        surname: '',
+        email: '',
+        phone: '',
+        role: '',
+        company: '',
+        companySize: '',
+        help: ''
+      });
+
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send your message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section id="contact" className="py-24 bg-gray-900 relative overflow-hidden">
@@ -100,20 +179,34 @@ const ContactSection = () => {
               
               <div>
                 <div className="backdrop-blur-lg bg-gray-900/40 border border-purple-500/30 rounded-xl p-8 shadow-[0_0_20px_rgba(138,43,226,0.3)]">
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                       <div className="space-y-2">
                         <label htmlFor="first_name" className="block text-sm font-medium text-gray-300">
                           First name <span className="text-red-500">*</span>
                         </label>
-                        <Input id="first_name" placeholder="Your first name" required className="bg-gray-800 border-gray-700 text-white" />
+                        <Input 
+                          id="first_name" 
+                          placeholder="Your first name" 
+                          required 
+                          className="bg-gray-800 border-gray-700 text-white"
+                          value={formData.firstName}
+                          onChange={(e) => handleInputChange('firstName', e.target.value)}
+                        />
                       </div>
                       
                       <div className="space-y-2">
                         <label htmlFor="surname" className="block text-sm font-medium text-gray-300">
                           Surname <span className="text-red-500">*</span>
                         </label>
-                        <Input id="surname" placeholder="Your surname" required className="bg-gray-800 border-gray-700 text-white" />
+                        <Input 
+                          id="surname" 
+                          placeholder="Your surname" 
+                          required 
+                          className="bg-gray-800 border-gray-700 text-white"
+                          value={formData.surname}
+                          onChange={(e) => handleInputChange('surname', e.target.value)}
+                        />
                       </div>
                     </div>
                     
@@ -122,14 +215,38 @@ const ContactSection = () => {
                         <label htmlFor="email" className="block text-sm font-medium text-gray-300">
                           Work email address <span className="text-red-500">*</span>
                         </label>
-                        <Input id="email" type="email" placeholder="you@company.com" required className="bg-gray-800 border-gray-700 text-white" />
+                        <Input 
+                          id="email" 
+                          type="email" 
+                          placeholder="you@company.com" 
+                          required 
+                          className="bg-gray-800 border-gray-700 text-white"
+                          value={formData.email}
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                        />
                       </div>
                       
+                      <div className="space-y-2">
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-300">
+                          Phone number
+                        </label>
+                        <Input 
+                          id="phone" 
+                          type="tel" 
+                          placeholder="+1 (555) 123-4567" 
+                          className="bg-gray-800 border-gray-700 text-white"
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                       <div className="space-y-2">
                         <label htmlFor="role" className="block text-sm font-medium text-gray-300">
                           Role <span className="text-red-500">*</span>
                         </label>
-                        <Select>
+                        <Select value={formData.role} onValueChange={(value) => handleInputChange('role', value)}>
                           <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
                             <SelectValue placeholder="Please select one" />
                           </SelectTrigger>
@@ -142,40 +259,45 @@ const ContactSection = () => {
                           </SelectContent>
                         </Select>
                       </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                      
                       <div className="space-y-2">
                         <label htmlFor="company" className="block text-sm font-medium text-gray-300">
                           Company <span className="text-red-500">*</span>
                         </label>
-                        <Input id="company" placeholder="Company name" required className="bg-gray-800 border-gray-700 text-white" />
+                        <Input 
+                          id="company" 
+                          placeholder="Company name" 
+                          required 
+                          className="bg-gray-800 border-gray-700 text-white"
+                          value={formData.company}
+                          onChange={(e) => handleInputChange('company', e.target.value)}
+                        />
                       </div>
-                      
-                      <div className="space-y-2">
-                        <label htmlFor="company_size" className="block text-sm font-medium text-gray-300">
-                          Company size <span className="text-red-500">*</span>
-                        </label>
-                        <Select>
-                          <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
-                            <SelectValue placeholder="Please select one" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-gray-800 border-gray-700 text-white">
-                            <SelectItem value="1-10">1-10 employees</SelectItem>
-                            <SelectItem value="11-50">11-50 employees</SelectItem>
-                            <SelectItem value="51-200">51-200 employees</SelectItem>
-                            <SelectItem value="201-500">201-500 employees</SelectItem>
-                            <SelectItem value="501+">501+ employees</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                    </div>
+                    
+                    <div className="mb-6">
+                      <label htmlFor="company_size" className="block text-sm font-medium text-gray-300 mb-2">
+                        Company size <span className="text-red-500">*</span>
+                      </label>
+                      <Select value={formData.companySize} onValueChange={(value) => handleInputChange('companySize', value)}>
+                        <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
+                          <SelectValue placeholder="Please select one" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-800 border-gray-700 text-white">
+                          <SelectItem value="1-10">1-10 employees</SelectItem>
+                          <SelectItem value="11-50">11-50 employees</SelectItem>
+                          <SelectItem value="51-200">51-200 employees</SelectItem>
+                          <SelectItem value="201-500">201-500 employees</SelectItem>
+                          <SelectItem value="501+">501+ employees</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                     
                     <div className="mb-6">
                       <label htmlFor="help" className="block text-sm font-medium text-gray-300 mb-2">
                         How can our sales team help you? <span className="text-red-500">*</span>
                       </label>
-                      <Select>
+                      <Select value={formData.help} onValueChange={(value) => handleInputChange('help', value)}>
                         <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
                           <SelectValue placeholder="Please select one" />
                         </SelectTrigger>
@@ -188,8 +310,8 @@ const ContactSection = () => {
                       </Select>
                     </div>
                     
-                    <Button type="submit" className="glow-button w-full py-6">
-                      Submit Request
+                    <Button type="submit" className="glow-button w-full py-6" disabled={isLoading}>
+                      {isLoading ? "Submitting..." : "Submit Request"}
                     </Button>
                   </form>
                 </div>

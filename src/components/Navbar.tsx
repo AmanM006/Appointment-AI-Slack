@@ -54,12 +54,14 @@ const Navbar = () => {
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" className="secondary-button">
-              Sign In
-            </Button>
+            <Link to="/signin">
+              <Button variant="outline" className="secondary-button">
+                Sign In
+              </Button>
+            </Link>
             <Link to="/signup">
               <Button className="glow-button">
-                Try for free
+                Get Started
               </Button>
             </Link>
           </div>

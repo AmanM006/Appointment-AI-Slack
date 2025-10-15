@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
+  esbuild: {
+    legalComments: 'none',
+  },
   plugins: [
     react(),
     mode === 'development' &&

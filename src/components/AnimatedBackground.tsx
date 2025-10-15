@@ -1,7 +1,8 @@
+'use client';
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-const AnimatedBackground = () => {
+export default function AnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -11,117 +12,85 @@ const AnimatedBackground = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size to match window
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 4;
+
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.height = window.innerHeight / 2;
     };
-    
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Animation function
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY / 2;
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+
     const animate = () => {
-      const currentTime = Date.now() * 0.001; // Convert to seconds for smoother animation
+      const time = Date.now() * 0.001;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Create gradient background
-      const bgGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      bgGradient.addColorStop(0, 'rgb(10, 10, 20)'); // Very dark blue-black at top
-      bgGradient.addColorStop(0.4, 'rgb(17, 24, 90)'); // Deep blue in middle
-      bgGradient.addColorStop(0.8, 'rgb(30, 64, 175)'); // Medium blue near bottom
-      bgGradient.addColorStop(1, 'rgb(8, 8, 15)'); // Back to very dark at bottom
-      
-      ctx.fillStyle = bgGradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Add subtle grid lines
-      ctx.lineWidth = 0.3;
-      ctx.strokeStyle = 'rgba(59, 130, 246, 0.07)'; // Very subtle blue grid
-      
-      const gridSize = 40;
-      // Horizontal lines
-      for (let i = 0; i < canvas.height; i += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, i);
-        ctx.lineTo(canvas.width, i);
-        ctx.stroke();
+
+      const waveHeight = canvas.height;
+
+      // Fully black background
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, waveHeight);
+
+      // Sharper radial glow following mouse
+      const radius = canvas.width * 0.4;
+      const glow = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, radius);
+      glow.addColorStop(0, 'rgba(180, 0, 255, 0.3)'); // Neon purple glow center
+      glow.addColorStop(1, 'rgba(180, 0, 255, 0)');   // Fade out
+
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, canvas.width, waveHeight);
+
+      // Wave points
+      const points: [number, number][] = [];
+      for (let x = 0; x <= canvas.width; x += 10) {
+        const y =
+          Math.sin(x * 0.008 + time) * 20 +
+          Math.sin(x * 0.015 + time * 0.8) * 10 +
+          Math.sin(x * 0.03 + time * 0.5) * 5 +
+          waveHeight * 0.4;
+        points.push([x, y]);
       }
-      
-      // Vertical lines
-      for (let i = 0; i < canvas.width; i += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(i, 0);
-        ctx.lineTo(i, canvas.height);
-        ctx.stroke();
-      }
-      
-      // Central glow for accent
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height * 0.4; // Move up slightly to match image
-      const radius = Math.min(canvas.width, canvas.height) * 0.6;
-      
-      const centerGlow = ctx.createRadialGradient(
-        centerX, centerY, 0,
-        centerX, centerY, radius
-      );
-      centerGlow.addColorStop(0, 'rgba(239, 68, 68, 0.15)'); // Red glow
-      centerGlow.addColorStop(0.3, 'rgba(219, 100, 27, 0.08)'); // Orange glow
-      centerGlow.addColorStop(0.6, 'rgba(59, 130, 246, 0.12)'); // Blue glow
-      centerGlow.addColorStop(1, 'rgba(30, 64, 175, 0)'); // Fade out
-      
-      ctx.fillStyle = centerGlow;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Animated wave only at the top 20% of the screen
-      const waveHeight = canvas.height * 0.2; // Top 20% of screen
-      const waveY = 0; // Start at the top
-      
-      // Create wave gradient
-      const waveGradient = ctx.createLinearGradient(0, waveY, 0, waveY + waveHeight);
-      waveGradient.addColorStop(0, 'rgba(30, 64, 175, 0.1)');
-      waveGradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.15)');
-      waveGradient.addColorStop(1, 'rgba(30, 64, 175, 0)');
-      
-      ctx.fillStyle = waveGradient;
-      
-      // Draw animated wave
+
+      // Create wave path
       ctx.beginPath();
-      ctx.moveTo(0, waveY);
-      
-      // Create wave pattern across the width
-      for(let x = 0; x <= canvas.width; x += 20) {
-        // Multiple sine waves with different frequencies and amplitudes
-        const y1 = Math.sin(x * 0.01 + currentTime) * 15;
-        const y2 = Math.sin(x * 0.02 - currentTime * 0.7) * 8;
-        const y = waveY + y1 + y2;
-        ctx.lineTo(x, y);
+      ctx.moveTo(points[0][0], points[0][1]);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i][0], points[i][1]);
       }
-      
-      // Complete the wave shape
-      ctx.lineTo(canvas.width, waveY);
-      ctx.lineTo(canvas.width, waveY + waveHeight);
-      ctx.lineTo(0, waveY + waveHeight);
+      ctx.lineTo(canvas.width, waveHeight);
+      ctx.lineTo(0, waveHeight);
       ctx.closePath();
+
+      // Blue → Yellow → Orange → Red gradient inside wave
+      const waveGradient = ctx.createLinearGradient(0, 0, 0, waveHeight);
+ waveGradient.addColorStop(0.5, 'rgba(128, 0, 128, 0.6)'); // Purple with 60% opacity (adjust as needed)
+waveGradient.addColorStop(1, 'rgba(0, 0, 0, 0.6)');    // Black with 60% opacity
+      ctx.fillStyle = waveGradient;
       ctx.fill();
-      
+
       requestAnimationFrame(animate);
     };
-    
+
     animate();
-    
+
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
   return (
-    <canvas 
-      ref={canvasRef} 
-      className="fixed inset-0 w-full h-full z-0 pointer-events-none"
+    <canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none"
       aria-hidden="true"
     />
   );
-};
-
-export default AnimatedBackground;
+}

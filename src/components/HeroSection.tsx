@@ -43,10 +43,10 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <div ref={heroRef} className="slide-up">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white mb-6 mt-20">
               AI work management and <span className="gradient-text neon-glow">productivity tools</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl ">
               Transform how your team works with Aura AI.
             </p>
             
@@ -65,17 +65,25 @@ const HeroSection = () => {
           <div className="mt-16 animate-fade-in-up opacity-0" style={{ animationDelay: '0.4s' }}>
             <div className="relative mx-auto max-w-5xl">
               {/* Dashboard Image */}
-              <div className="glass-card rounded-2xl overflow-hidden shadow-2xl">
-                <img 
-                  src="https://placehold.co/1200x675/1a1a1a/8A2BE2?text=AI+Appointment+Dashboard&font=source-sans-pro"
-                  alt="Aura AI Dashboard"
-                  className="w-full h-auto"
-                />
-              </div>
-              {/* Decorative elements */}
-              <div className="absolute -right-8 -top-8 w-24 h-24 bg-purple-900/30 rounded-full blur-md -z-10"></div>
-              <div className="absolute -left-8 -bottom-8 w-32 h-32 bg-purple-800/20 rounded-full blur-md -z-10"></div>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-purple-500/5 rounded-full blur-[100px] -z-10"></div>
+              <div className="flex items-center justify-center  h-[500px] bg-black rounded-2xl">
+
+              <div className="relative w-full h-[500px] max-w-4xl mx-auto p-[4px] rounded-2xl overflow-hidden">
+  {/* Flowing Gradient Border */}
+  <div className="absolute inset-0 z-0 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500
+                    animate-flow bg-[length:300%_300%] rounded-2xl blur-sm"></div>
+
+  {/* Inner Content Container */}
+  <div className="relative h-full z-10 rounded-[inherit] bg-[#111] px-8 py-20 text-center
+              flex items-center justify-center"> {/* Added flex, items-center, justify-center */}
+    <h1 className="text-4xl font-bold text-purple-400"> {/* Removed 'center' and 'mt-100' */}
+      AI Appointment Dashboard
+    </h1>
+  </div>
+</div>
+
+</div>
+
+              
             </div>
           </div>
         </div>
