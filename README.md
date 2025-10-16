@@ -1,73 +1,66 @@
-# Welcome to your Lovable project
+# Aura AI 💬
 
-## Project info
+Aura AI is a **smart appointment management platform** designed for teams that value speed, automation, and simplicity.  
+Think of it as your intelligent scheduling assistant — like Slack for appointments — powered by AI.
 
-**URL**: https://lovable.dev/projects/3e7bc50c-2c12-4ee8-bdfa-9fa31d21e53b
+> 🚀 Automate your workflows • 📅 Sync your calendars • 🤖 Scale your business
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use Lovable**
+- **Smart Calendar Integration**  
+  Seamlessly sync with Google Calendar, Outlook, and Apple Calendar to manage all your appointments in one unified platform.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/3e7bc50c-2c12-4ee8-bdfa-9fa31d21e53b) and start prompting.
+- **AI-Powered Reminders**  
+  Reduce no-shows by up to 80% with intelligent, behavior-based reminders.
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Voice Command Booking**  
+  Book and manage appointments with natural language voice commands.
 
-**Use your preferred IDE**
+- **Advanced Data Analytics**  
+  Visualize key trends and optimize your scheduling with detailed dashboards.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Smart Conflict Resolution**  
+  Let AI detect and resolve scheduling conflicts automatically.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- **API Integration Ecosystem**  
+  Connect with 5,000+ apps to automate your entire workflow end-to-end.
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🧭 How It Works
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Our intuitive platform streamlines appointment management in just a few steps:
 
-# Step 3: Install the necessary dependencies.
-npm i
+1. **Connect Your Calendars**  
+   One-click integration with all your calendar accounts. Events sync in real time.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+2. **Configure Smart Automation**  
+   AI learns your scheduling patterns and automates booking, rescheduling, and follow-ups.
 
-**Edit a file directly in GitHub**
+3. **Analyze Performance**  
+   Track metrics like meeting frequency, duration, cancellation rates, and engagement.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+4. **Scale With Confidence**  
+   From solo entrepreneurs to enterprises, Aura AI grows with your business — no performance loss.
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🧠 Tech Stack
 
-## What technologies are used for this project?
+- Frontend: HTML, CSS, JavaScript  
+- Backend: Node.js  
+- Authentication: OAuth integration  
+- Calendar Integration: Google Calendar API, Outlook API  
+- Analytics: Custom dashboards & AI models
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🧰 Installation
 
-## How can I deploy this project?
+Clone the repository:
 
-Simply open [Lovable](https://lovable.dev/projects/3e7bc50c-2c12-4ee8-bdfa-9fa31d21e53b) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```bash
+git clone https://github.com/your-username/aura-appointment-ai.git
+cd aura-appointment-ai
