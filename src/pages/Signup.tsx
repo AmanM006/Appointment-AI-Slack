@@ -83,7 +83,7 @@ const Signup = () => {
       </div>
       <div className="absolute top-6 left-6">
         <span className="text-gray-400 text-sm align-middle">Back</span> {/* Added align-middle */}
-        <Link to="/." className="text-purple-400 hover:text-purple-300 hover:underline text-sm transition-colors ml-2 ">
+        <Link to="/#" className="text-purple-400 hover:text-purple-300 hover:underline text-sm transition-colors ml-2 ">
           <FontAwesomeIcon icon={faCircleChevronLeft} style={{ fontSize: '18px' }} className="align-middle" /> {/* Added align-middle */}
         </Link>
       </div>
