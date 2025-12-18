@@ -1,14 +1,18 @@
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { AuthProvider } from './context/AuthProvider'; // adjust path as needed
+import { HashRouter } from 'react-router-dom';
+import App from './App.jsx';
+import './index.css';
+import { AuthProvider } from './context/AuthProvider';
+console.log("App starting...");
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-      <App />
+      <HashRouter>
+        <App />
+      </HashRouter>
     </AuthProvider>
   </React.StrictMode>
 );
+

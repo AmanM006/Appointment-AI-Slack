@@ -4,6 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
+  base: '/Appointment-AI-Slack/',   // 👈 replace with your actual GitHub repo name
   server: {
     host: "::",
     port: 8080,
