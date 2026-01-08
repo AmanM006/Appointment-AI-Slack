@@ -65,4 +65,4 @@ Clone the repository:
 git clone https://github.com/your-username/aura-appointment-ai.git
 cd aura-appointment-ai
 
-added info to test pr reviewer part 4
+added info to test pr reviewer part pt2
